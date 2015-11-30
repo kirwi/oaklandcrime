@@ -27,12 +27,12 @@ df['date'] = map(lambda x: datetime.strptime(str(x),
     '%Y-%m-%dT%H:%M:%S'), df['date'])
 df = df.sort('date')
 
-# source = ColumnDataSource(
-#         data=dict(
-#             date=df['date'],
-#             date_str=map(lambda x: datetime.strftime(x,'%m/%d'),
-#                 df['date']),
-#             count=df['count']))
+source = ColumnDataSource(
+        data=dict(
+            date=df['date'],
+            date_str=map(lambda x: datetime.strftime(x,'%m/%d'),
+                df['date']),
+            count=df['count']))
 
 hover = HoverTool(tooltips=[
             ("date", "@date_str"),
