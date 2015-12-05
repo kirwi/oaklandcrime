@@ -1,10 +1,11 @@
 import pandas as pd
-from bokeh.plotting import figure, output_file, save
 import requests
 from flask import Flask, render_template
 from datetime import datetime
 from math import pi
 from bokeh.models import HoverTool, ColumnDataSource
+from bokeh.plotting import figure, output_file, save
+from bokeh.embed import components
 import os
 import time
 
@@ -47,10 +48,7 @@ fig = figure(width=1000, x_axis_type='datetime', tools=[hover],
         title_text_color='Tomato',
         title_text_font_size='28pt',
         title_text_font_style='bold',
-        y_axis_label='no. committed',
-        #x_axis_label='date')
-fig.xaxis.axis_label_text_font='monospace'
-fig.xaxis.axis_label_text_font_style='bold'
+        y_axis_label='no. committed')
 fig.yaxis.axis_label_text_font_style='bold'
 fig.yaxis.axis_label_text_font='monospace'
 fig.xaxis.major_label_orientation = pi/4
@@ -64,11 +62,11 @@ fig.line('date', 'count', line_width=4, line_join='round',
         line_cap='round', line_color='DeepSkyBlue', source=source)
 fig.circle('date', 'count', size=10, fill_color='White',
         line_color='Tomato', source=source)
-save(fig, 'templates/index.html')
+script, div = components(fig)
 
 @app.route('/')
 def index():    
-    return render_template('index.html')
+    return render_template('index.html', script=script, div=div)
 
 if __name__ == '__main__':
     app.run()
